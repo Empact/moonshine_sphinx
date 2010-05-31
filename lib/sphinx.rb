@@ -6,8 +6,6 @@ module Sphinx
     manifest.class_eval do
       extend ClassMethods
 
-      configure :sphinx => { :version => '0.9.8.1' }
-
       # We need god in our lives to start/stop/monitor searchd
       recipe :god
     end
@@ -38,6 +36,10 @@ module Sphinx
   #  plugin :sphinx
   #  recipe :sphinx
   def sphinx(options = {})
+    options = {
+      :version => '0.9.8.1'
+    }.merge(options)
+
     configure :sphinx => YAML::load(template(sphinx_template_dir + 'sphinx.yml', binding))
 
     [:searchd_files, :searchd_file_path].each do |config|
