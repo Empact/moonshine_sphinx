@@ -38,7 +38,10 @@ module Sphinx
   def sphinx(options = {})
     options = {
       :config_file => "#{configuration[:deploy_to]}/shared/config/sphinx.conf",
-      :version => '0.9.8.1'
+      :version => '0.9.8.1',
+      :index_cron => {
+        :minute => 9
+      }
     }.merge(options)
 
     configure :sphinx => YAML::load(template(sphinx_template_dir + 'sphinx.yml', binding))
