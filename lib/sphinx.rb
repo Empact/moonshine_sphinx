@@ -1,13 +1,16 @@
 require 'pathname'
+require 'sphinx/god'
+require 'sphinx/monit'
 
 module Sphinx
 
   def self.included(manifest)
     manifest.class_eval do
       extend ClassMethods
-
-      # We need god in our lives to start/stop/monitor searchd
-      recipe :god
+      class << self
+        include Sphinx::God
+        include Sphinx::Monit
+      end
     end
   end
 
@@ -92,9 +95,6 @@ module Sphinx
       ],
       :subscribe => file(sphinx_configuration[:config_file])
 
-    exec "god restart #{configuration[:application]}-sphinx",
-      :require => exec("rake thinking_sphinx:index")
-
     package 'wget', :ensure => :installed
 
     exec 'sphinx',
@@ -114,11 +114,6 @@ module Sphinx
     configure(:rails_logrotate => {
       :postrotate => "#{postrotate}\n    pkill -USR1 searchd"
      })
-
-     file "/etc/god/#{configuration[:application]}-sphinx.god",
-       :require => file('/etc/god/god.conf'),
-       :content => template(sphinx_template_dir.join('sphinx.god')),
-       :notify => exec('restart_god')
 
      # Set default here instead of in included so that :minute doesn't get deep_merged with user settings
      configuration[:sphinx][:index_cron] ||= { :minute => 9 }

@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
-class SphinxManifest < Moonshine::Manifest
+class SphinxManifest < Moonshine::Manifest::Rails
   plugin :sphinx
 end
 
