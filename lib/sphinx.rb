@@ -37,6 +37,7 @@ module Sphinx
   #  recipe :sphinx
   def sphinx(options = {})
     options = {
+      :config_file => "#{configuration[:deploy_to]}/shared/config/sphinx.conf",
       :version => '0.9.8.1'
     }.merge(options)
 
