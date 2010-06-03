@@ -1,6 +1,6 @@
 require 'pathname'
-require 'sphinx/god'
-require 'sphinx/monit'
+require File.join(File.dirname(__FILE__), 'sphinx/god')
+require File.join(File.dirname(__FILE__), 'sphinx/monit')
 
 module Sphinx
 
