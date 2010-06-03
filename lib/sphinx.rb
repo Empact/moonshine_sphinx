@@ -103,12 +103,13 @@ module Sphinx
 
     package 'wget', :ensure => :installed
 
+    build_options = '--with-pgsql' if database_environment[:adapter] == 'postgresql'
     exec 'sphinx',
       :command => [
         "wget http://sphinxsearch.com/downloads/sphinx-#{options[:version]}.tar.gz",
         "tar xzf sphinx-#{options[:version]}.tar.gz",
         "cd sphinx-#{options[:version]}",
-        './configure',
+        ['./configure', build_options].join(' '),
         'make',
         'make install'
       ].join(' && '),
