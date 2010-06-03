@@ -49,15 +49,23 @@ module Sphinx
 
     configure :sphinx => YAML::load(template(sphinx_template_dir + 'sphinx.yml', binding))
 
+    file File.join(configuration[:deploy_to], 'shared/sphinx'),
+      :ensure => :directory,
+      :recurse => true,
+      :owner => configuration[:user],
+      :group => configuration[:group] || configuration[:user],
+      :mode => '775'
+
     [:searchd_files, :searchd_file_path].each do |config|
       dir = sphinx_configuration[config]
       raise "Expected #{sphinx_yml} to set '#{config}' for '#{rails_env}', but it did not. A decent value to set it to is: #{configuration[:deploy_to]}/shared/sphinx/#{rails_env}" unless dir
       file dir,
         :ensure => :directory,
-        :recurse => 'true',
+        :recurse => true,
         :owner => configuration[:user],
         :group => configuration[:group] || configuration[:user],
-        :mode => '775'
+        :mode => '775',
+        :require => file(File.join(configuration[:deploy_to], 'shared/sphinx'))
     end
 
     file rails_root + 'db/sphinx',
