@@ -3,14 +3,12 @@ require File.join(File.dirname(__FILE__), 'sphinx/god')
 require File.join(File.dirname(__FILE__), 'sphinx/monit')
 
 module Sphinx
+  include Sphinx::God
+  include Sphinx::Monit
 
   def self.included(manifest)
     manifest.class_eval do
       extend ClassMethods
-      class << self
-        include Sphinx::God
-        include Sphinx::Monit
-      end
     end
   end
 
