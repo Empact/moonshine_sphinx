@@ -1,4 +1,4 @@
-check process searchd with pidfile /opt/local/var/db/sphinx/log/searchd.pid
+check process <%= configuration[:application] %>-sphinx with pidfile /opt/local/var/db/sphinx/log/searchd.pid
   start program = "/usr/local/bin/searchd --config <%= sphinx_configuration[:config_file] %>"
   stop program = "/usr/local/bin/searchd --stop --config <%= sphinx_configuration[:config_file] %>"
 
