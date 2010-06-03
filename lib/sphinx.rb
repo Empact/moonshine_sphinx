@@ -54,7 +54,7 @@ module Sphinx
       raise "Expected #{sphinx_yml} to set '#{config}' for '#{rails_env}', but it did not. A decent value to set it to is: #{configuration[:deploy_to]}/shared/sphinx/#{rails_env}" unless dir
       file dir,
         :ensure => :directory,
-        :recurse => true,
+        :recurse => 'true',
         :owner => configuration[:user],
         :group => configuration[:group] || configuration[:user],
         :mode => '775'
